@@ -5,6 +5,7 @@ option go_package= "./pb";
 service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply) {}
   rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+  rpc GetPerson (Person) returns (PersonResponse) {}
 }
 
 message HelloRequest {
@@ -13,4 +14,14 @@ message HelloRequest {
 
 message HelloReply {
   string message = 1;
+}
+
+message Person {
+  string name = 1;
+  int64 id = 2;
+}
+
+message PersonResponse {
+  string name = 1;
+  int64 id = 2;
 }

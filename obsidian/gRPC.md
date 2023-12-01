@@ -7,7 +7,7 @@ Um cliente envia uma solicitação para um processo no servidor que está sempre
 
 Isso ainda é utilizado – porém, o modelo RPC é mais usado para comunicação de baixo nível, até que o Java implementou uma API chamada JRMI (Java Remote Method Invocation) que funciona basicamente da mesma forma que o *gRPC* funciona hoje em dia, porém de uma maneira mais voltada para métodos e classes e não para comunicação entre processos.
 
-![[rpc_arch.png]]
+![](rpc_arch.png)
 
 # O que é gRPC
 
@@ -21,16 +21,16 @@ Além disso, a chamada de um método remoto é, essencialmente, uma chamada comu
 
 No gRPC, uma aplicação cliente pode chamar diretamente um método em uma aplicação servidor em uma máquina diferente, como se fosse um objeto local, facilitando a criação de aplicações e serviços distribuídos. Como em muitos sistemas RPC, o gRPC é baseado na ideia de definir um serviço, especificando os métodos que podem ser chamados remotamente, juntamente com seus parâmetros e tipos de retorno. No lado do servidor, este implementa a interface e executa um servidor gRPC para lidar com chamadas do cliente. No lado do cliente, o cliente possui um stub que fornece os mesmos métodos que o servidor.
 
-![[grpc_arch.png]]
+![](grpc_arch.png)
   
 Clientes e servidores gRPC podem ser executados e se comunicar em diversos ambientes - desde servidores dentro do Google até o seu próprio desktop - e podem ser escritos em qualquer uma das linguagens suportadas pelo gRPC. Portanto, por exemplo, é possível criar facilmente um servidor gRPC em Java com clientes em Go, Python ou Ruby.
 
-![[grpc_comm.png]]
+![](grpc_comm.png)
 
 # HTTP/2
 O HTTP/2 já é utilizado faz algum tempo e vem se tornando a principal forma de comunicação na web desde 2015.
 
-![[http2_comm.png]]
+![](http2_comm.png)
 
 Entre as muitas vantagens do HTTP/2 (que também foi criado pela Google), está o fato de que ele é muito mais rápido do que o HTTP/1.1 por conta de vários fatores.
 ### Multiplexação de requests e respostas
@@ -39,7 +39,7 @@ Tradicionalmente, o HTTP não pode enviar mais de uma requisição por vez para 
 
 No HTTP/2 temos o que é chamado de multiplexação, que consiste em poder justamente receber várias respostas e enviar várias chamadas em uma mesma conexão. Isto só é possível por conta da criação de um novo frame no pacote HTTP chamado de **Binary Framing**. Este frame essencialmente separa as duas partes (headers e payload) da mensagem em dois frames separados, porém contidos na mesma mensagem dentro de um encoding específico.
 
-![[http2_arch.png]]
+![](http2_arch.png)
 
 ### Compressão de headers
 
@@ -49,7 +49,8 @@ Inicialmente tudo na chamada é comprimido, inclusive os headers, isso ajuda na 
 
 Se os headers foram alterados, somente os headers alterados são enviados, e os que não foram alterados recebem um índice para o valor anterior do header, evitando que headers sejam enviados repetidamente.
 
-![[http_compression.png]]
+![](http_compression.png)
+
 Como você pode ver, somente o `path` dessa requisição mudou, portanto só ele será enviado.
 
 # Protocol Buffers
@@ -76,42 +77,38 @@ message SignReply {
 }
 ```
 
-![[protofile_comm.png]]
+![](protofile_comm.png)
 
-![[proto_compatibility.png]]
+![](proto_compatibility.png)
 
 
 # Benefícios
 
->[!info]- Mais leve e mais rápido por utilizar codificação binária e HTTP/2
+- Mais leve e mais rápido por utilizar codificação binária e HTTP/2
 
->[!info]- Multi plataforma com a mesma interface de contratos
+- Multi plataforma com a mesma interface de contratos
 
->[!info]- Funciona em muitas plataformas com pouco ou nenhum overhead
+- Funciona em muitas plataformas com pouco ou nenhum overhead
 
->[!info]- O código é auto documentado
+- O código é auto documentado
 
->[!info]- Implementação relativamente fácil depois do desenvolvimento inicial
+- Implementação relativamente fácil depois do desenvolvimento inicial
 
 # Problemas
 
->[!info]- Protobuf nao possui um package manager para gerenciar dependencias entre arquivos e interface
->A falta de uma ferramenta embutida no protobuf para gerenciar automaticamente as dependências entre os arquivos `.proto`. Isso significa que, ao trabalhar com múltiplos arquivos de definição protobuf, você é responsável por garantir que as dependências entre eles estejam corretamente resolvidas.
+- Protobuf nao possui um package manager para gerenciar dependencias entre arquivos e interface
 
-> [!info]- Exige uma pequena mudança de paradigma em relação ao modelo REST
-> 1. **Estilo de Comunicação**
-> 2. **Formato de Dados**
-> 3. **Contratos de Serviço**
-> 4. **Comunicação Síncrona vs. Assíncrona**
-> 6. **Ferramentas e Ecossistema**
+- Exige uma pequena mudança de paradigma em relação ao modelo REST
 
-> [!info]- Curva de aprendizado inicial é mais complexa
-> > [!info]- Não é uma especificação conhecida por muitos
-> > > [!info]- Por conta de não ser muito conhecido, a documentação é esparsa
+- Curva de aprendizado inicial é mais complexa
 
-> [!info]- A arquitetura de um sistema usando gRPC pode se tornar um pouco mais complexa
+- Não é uma especificação conhecida por muitos
 
-###### Referências:
+- Por conta de não ser muito conhecido, a documentação é esparsa
+
+- A arquitetura de um sistema usando gRPC pode se tornar um pouco mais complexa
+
+### Referências:
 1. https://blog.lsantos.dev/guia-grpc-1/
 2. https://aws.amazon.com/pt/compare/the-difference-between-grpc-and-rest/
 3. https://grpc.io/docs/what-is-grpc/

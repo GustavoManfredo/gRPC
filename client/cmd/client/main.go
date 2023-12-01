@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:9000", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Cannot connect: %v", err)
 	}
@@ -25,5 +25,16 @@ func main() {
 		log.Fatalf("Error: %v", err)
 	}
 
+	reqPerson := &pb.Person{
+		Name: "Sure",
+	}
+
 	log.Println(res)
+
+	responsePerson, err := client.GetPerson(context.Background(), reqPerson)
+	if err != nil {
+		log.Fatalf("Error", err)
+	}
+
+	log.Println(responsePerson)
 }
